@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../Store/index.ts";
 import { useRef } from "react";
 import { Graphics } from "pixi.js";
+import { PixiPlugin } from "gsap/PixiPlugin";
+import * as PIXI from "pixi.js";
 
 type AppleProps = {
   x: number;
@@ -12,6 +14,9 @@ type AppleProps = {
 };
 
 const Apple = ({ x, y, size }: AppleProps) => {
+  PixiPlugin.registerPIXI(PIXI);
+  gsap.registerPlugin(PixiPlugin);
+
   const { game } = useSelector((state: RootState) => state.game);
 
   const appleRef = useRef<Graphics>(null);
@@ -20,8 +25,6 @@ const Apple = ({ x, y, size }: AppleProps) => {
     if (appleRef.current && game === "deathScreen") {
       gsap.to(appleRef.current, {
         alpha: 0,
-        scaleX: 0,
-        scaleY: 0,
         duration: 0.4,
         ease: "back.in",
         delay: 0.03,

@@ -3,7 +3,6 @@ import gsap from "gsap";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "../Store/index.ts";
-
 import classes from "./Screen.module.css";
 
 type ScreenProps = {
@@ -40,7 +39,6 @@ const Screen = ({ button, title, handleScreen }: ScreenProps) => {
   return (
     <div ref={screenRef} className={classes.overlay}>
       <div className={classes.content}>
-        {/* Level Complete! */}
         <h1
           className={
             game === "deathScreen" ? classes.deathScreen : classes.nextLevel

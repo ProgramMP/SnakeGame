@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../Store/index.ts";
 import { useRef } from "react";
 import { Graphics } from "pixi.js";
+import { PixiPlugin } from "gsap/PixiPlugin";
+import * as PIXI from "pixi.js";
 
 type AreaProps = {
   width: number;
@@ -12,6 +14,9 @@ type AreaProps = {
 };
 
 const Area = ({ width, height, canvasHeight }: AreaProps) => {
+  PixiPlugin.registerPIXI(PIXI);
+  gsap.registerPlugin(PixiPlugin);
+
   const { game } = useSelector((state: RootState) => state.game);
 
   const areaRef = useRef<Graphics>(null);
@@ -20,8 +25,6 @@ const Area = ({ width, height, canvasHeight }: AreaProps) => {
     if (areaRef.current && game === "deathScreen") {
       gsap.to(areaRef.current, {
         alpha: 0,
-        scaleX: 0,
-        scaleY: 0,
         duration: 0.4,
         ease: "back.in",
         delay: 0.03,

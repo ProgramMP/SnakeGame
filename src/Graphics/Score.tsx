@@ -4,8 +4,13 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../Store/index.ts";
 import type { Text } from "pixi.js";
 import { useRef } from "react";
+import { PixiPlugin } from "gsap/PixiPlugin";
+import * as PIXI from "pixi.js";
 
 const Score = () => {
+  PixiPlugin.registerPIXI(PIXI);
+  gsap.registerPlugin(PixiPlugin);
+
   const { score, game } = useSelector((state: RootState) => state.game);
 
   const scoreRef = useRef<Text>(null);
@@ -14,8 +19,6 @@ const Score = () => {
     if (scoreRef.current && game === "deathScreen") {
       gsap.to(scoreRef.current, {
         alpha: 0,
-        scaleX: 0,
-        scaleY: 0,
         duration: 0.4,
         ease: "back.in",
         delay: 0.03,

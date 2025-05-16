@@ -3,6 +3,8 @@ import gsap from "gsap";
 import { useSelector } from "react-redux";
 import type { RootState } from "../Store/index.ts";
 import { useRef } from "react";
+import { PixiPlugin } from "gsap/PixiPlugin";
+import * as PIXI from "pixi.js";
 
 type SnakeProps = {
   x: number;
@@ -12,6 +14,9 @@ type SnakeProps = {
 };
 
 const Snake = ({ x, y, size, index }: SnakeProps) => {
+  PixiPlugin.registerPIXI(PIXI);
+  gsap.registerPlugin(PixiPlugin);
+
   const { game } = useSelector((state: RootState) => state.game);
 
   const bodyRef = useRef<any>(null);
@@ -36,8 +41,6 @@ const Snake = ({ x, y, size, index }: SnakeProps) => {
     if (game === "deathScreen" && bodyRef.current) {
       gsap.to(bodyRef.current, {
         alpha: 0,
-        scaleX: 0,
-        scaleY: 0,
         duration: 1,
         ease: "back.in",
         delay: index * 0.03,

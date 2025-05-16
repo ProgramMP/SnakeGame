@@ -5,12 +5,17 @@ import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../Store/index.ts";
 import { pauseGame } from "../Store/gameSlice";
 import type { Text } from "pixi.js";
+import { PixiPlugin } from "gsap/PixiPlugin";
+import * as PIXI from "pixi.js";
 
 type PauseProps = {
   canvasWidth: number;
 };
 
 const Pause = ({ canvasWidth }: PauseProps) => {
+  PixiPlugin.registerPIXI(PIXI);
+  gsap.registerPlugin(PixiPlugin);
+
   const dispatch = useDispatch();
   const { isPaused, game } = useSelector((state: RootState) => state.game);
 
@@ -20,8 +25,6 @@ const Pause = ({ canvasWidth }: PauseProps) => {
     if (pauseRef.current && game === "deathScreen") {
       gsap.to(pauseRef.current, {
         alpha: 0,
-        scaleX: 0,
-        scaleY: 0,
         duration: 0.4,
         ease: "back.in",
         delay: 0.03,

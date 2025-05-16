@@ -20,7 +20,7 @@ const gameSlice = createSlice({
   reducers: {
     startGame(state) {
       state.game = "game";
-      state.score = 24;
+      state.score = 0;
     },
     pauseGame(state) {
       if (state.game === "game" || state.game === "secondLevel") {
