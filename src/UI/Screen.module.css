@@ -1,0 +1,60 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.content {
+  background: #2c3e50;
+  height: 20rem;
+  width: 18rem;
+  padding: 2rem 3rem;
+  border-radius: 16px;
+  text-align: center;
+  color: #ecf0f1;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+}
+
+.content h1 {
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+}
+
+.deathScreen {
+  color: #c5172e;
+}
+
+.nextLevel {
+  color: #4caf50;
+}
+
+.content button {
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  padding: 0.8rem 6rem;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  pointer-events: auto;
+}
+
+.content button:disabled {
+  opacity: 0.5;
+  cursor: none;
+  pointer-events: none;
+}
+
+.content button:hover {
+  background-color: #2ecc71;
+}
