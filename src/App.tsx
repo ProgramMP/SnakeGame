@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { pauseGame, returnToMenu, nextLevel } from "./Store/gameSlice";
 import type { RootState } from "./Store/index.ts";
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from "./Constants/constants.ts";
-import Screen from "./UI/Screen.tsx";
+import Screen from "./UI/Screen";
 import SnakeGame from "./Components/SnakeGame";
 import Menu from "./Components/Menu";
 import Score from "./Graphics/Score";
@@ -17,16 +17,16 @@ export default function App() {
   const dispatch = useDispatch();
   const { game } = useSelector((state: RootState) => state.game);
 
+  // Handle "p" to pause game
   useEffect(() => {
-    const handlePauseP = (e: KeyboardEvent) => {
+    const handlePauseKey = (e: KeyboardEvent) => {
       if (e.key === "p") {
         dispatch(pauseGame());
       }
     };
-
-    window.addEventListener("keydown", handlePauseP);
-    return () => window.removeEventListener("keydown", handlePauseP);
-  }, [dispatch, game]);
+    window.addEventListener("keydown", handlePauseKey);
+    return () => window.removeEventListener("keydown", handlePauseKey);
+  }, [dispatch]);
 
   return (
     <>
@@ -55,13 +55,10 @@ export default function App() {
       >
         {(game === "game" ||
           game === "deathScreen" ||
-          game === "nextLevel" ||
           game === "secondLevel") && (
           <>
             <Score />
-
             <Pause canvasWidth={CANVAS_WIDTH} />
-
             <SnakeGame
               canvasWidth={CANVAS_WIDTH}
               canvasHeight={CANVAS_HEIGHT}

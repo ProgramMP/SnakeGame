@@ -72,11 +72,11 @@ const SnakeGame = ({ canvasWidth, canvasHeight }: SnakeGameProps) => {
     }
   }, [game]);
 
-  // Arrow keys
+  //Arrow keys
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const newDir = e.key as ArrowKey;
-      if (!(newDir in OPPOSITE_DIRECTIONS)) return;
+      if (!(newDir in OPPOSITE_DIRECTIONS) || isPaused) return;
       if (newDir !== direction && newDir !== OPPOSITE_DIRECTIONS[direction]) {
         directionQueue.current = newDir;
       }
@@ -84,7 +84,7 @@ const SnakeGame = ({ canvasWidth, canvasHeight }: SnakeGameProps) => {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [direction]);
+  }, [direction, isPaused]);
 
   // Food spawning
   const spawnFood = (snakeBody: Position[]) => {
@@ -108,13 +108,14 @@ const SnakeGame = ({ canvasWidth, canvasHeight }: SnakeGameProps) => {
     if (now - lastMoveTime.current < MOVE_INTERVAL) return;
     lastMoveTime.current = now;
 
-    const newDir = directionQueue.current;
+    const newMove = directionQueue.current;
+
     if (
-      newDir &&
-      newDir !== direction &&
-      newDir !== OPPOSITE_DIRECTIONS[direction]
+      newMove &&
+      newMove !== direction &&
+      newMove !== OPPOSITE_DIRECTIONS[direction]
     ) {
-      setDirection(newDir);
+      setDirection(newMove);
     }
     directionQueue.current = null;
 
@@ -135,21 +136,21 @@ const SnakeGame = ({ canvasWidth, canvasHeight }: SnakeGameProps) => {
         (game === "secondLevel" && isInsideObstacle(newHead.x, newHead.y)) ||
         prevSnake.some((body) => body.x === newHead.x && body.y === newHead.y)
       ) {
-        dispatch(gameOver());
+        setTimeout(() => dispatch(gameOver()), 0);
         return prevSnake;
       }
 
+      // Eating food
       const newSnake = [newHead, ...prevSnake];
 
-      // Eating food
       if (newHead.x === food.x && newHead.y === food.y) {
-        dispatch(incrementScore());
         spawnFood(newSnake);
+        setTimeout(() => dispatch(incrementScore()), 0);
+        return newSnake;
+      } else {
+        newSnake.pop();
         return newSnake;
       }
-
-      newSnake.pop();
-      return newSnake;
     });
   });
 
